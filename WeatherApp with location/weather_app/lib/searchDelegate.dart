@@ -78,6 +78,7 @@ class CitiesSearchDelegate extends SearchDelegate {
                               child: const Text("Yes")),
                           ElevatedButton(
                               onPressed: () {
+                                Navigator.pop(context);
                                 Navigator.pushNamed(context, '/weather',
                                     arguments: [
                                       1,
@@ -85,14 +86,10 @@ class CitiesSearchDelegate extends SearchDelegate {
                                       0.0,
                                       0.0
                                     ]);
-                                // Navigator.pop(context);
                               },
                               child: const Text("No")),
                         ],
                       ));
-
-              //Navigator.pushNamed(context, '/weather',
-              //  arguments: [1, citiesList[index] as String, 0.0, 0.0]);
             },
             title: Text(citiesList[index]),
           ),
