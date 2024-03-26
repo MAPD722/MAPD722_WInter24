@@ -1,12 +1,9 @@
 import 'dart:convert';
 import 'dart:ffi';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:http/http.dart' as http;
 import 'package:weather_app/Weather.dart';
 
 class Networking {
-  // FirebaseDatabase database = FirebaseDatabase.instance;
-
   Future<List<String>> getAllCities(String city) async {
     http.Response response = await http
         .get(Uri.parse('http://gd.geobytes.com/AutoCompleteCity?&q=$city'));
