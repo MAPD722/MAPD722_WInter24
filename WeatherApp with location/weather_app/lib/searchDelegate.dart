@@ -61,8 +61,38 @@ class CitiesSearchDelegate extends SearchDelegate {
         return ListView.builder(
           itemBuilder: (context, index) => ListTile(
             onTap: () {
-              Navigator.pushNamed(context, '/weather',
-                  arguments: [1, citiesList[index] as String, 0.0, 0.0]);
+              showDialog(
+                  context: context,
+                  builder: (cnx) => AlertDialog(
+                        title: const Text('Save to Database?'),
+                        content: const Text(
+                            "Are you sure you want to save this city to Database?"),
+                        actions: [
+                          ElevatedButton(
+                              onPressed: () {
+                                Networking.saveCityToFirebase(
+                                    citiesList[index] as String);
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                              },
+                              child: const Text("Yes")),
+                          ElevatedButton(
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/weather',
+                                    arguments: [
+                                      1,
+                                      citiesList[index] as String,
+                                      0.0,
+                                      0.0
+                                    ]);
+                                // Navigator.pop(context);
+                              },
+                              child: const Text("No")),
+                        ],
+                      ));
+
+              //Navigator.pushNamed(context, '/weather',
+              //  arguments: [1, citiesList[index] as String, 0.0, 0.0]);
             },
             title: Text(citiesList[index]),
           ),

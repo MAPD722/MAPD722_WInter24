@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/Networking.dart';
 import 'package:weather_app/searchDelegate.dart';
 
 class SearchForCityScreen extends StatefulWidget {
@@ -10,11 +11,25 @@ class SearchForCityScreen extends StatefulWidget {
 
 class _SearchForCityScreenState extends State<SearchForCityScreen> {
   var list = [];
+
+  Future<void> getAllCities() async {
+    var dblist = await Networking.getAllCitiesFromDB();
+    setState(() {
+      list = dblist;
+    });
+  }
+
+  @override
+  initState() {
+    super.initState();
+    getAllCities();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Search For Cities'),
+          title: const Text('Fav Cities'),
           actions: [
             IconButton(
                 onPressed: () {
@@ -24,11 +39,24 @@ class _SearchForCityScreenState extends State<SearchForCityScreen> {
                 icon: const Icon(Icons.search)),
           ],
         ),
-        body: ListView.builder(
-          itemCount: list.length,
-          itemBuilder: ((context, index) {
-            return ListTile(title: Text(list.elementAt(index)));
-          }),
+        body: RefreshIndicator(
+          onRefresh: getAllCities,
+          child: ListView.builder(
+            itemCount: list.length,
+            itemBuilder: ((context, index) {
+              return ListTile(
+                title: Text(list.elementAt(index)),
+                onTap: () {
+                  Navigator.pushNamed(context, '/weather', arguments: [
+                    1,
+                    list.elementAt(index) as String,
+                    0.0,
+                    0.0
+                  ]);
+                },
+              );
+            }),
+          ),
         ));
   }
 }
